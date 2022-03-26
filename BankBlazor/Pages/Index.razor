@@ -1,0 +1,48 @@
+﻿@page "/"
+@using Banksystem
+
+
+<PageTitle>Index</PageTitle>
+
+<h1>Create an account</h1>
+
+<input type='text' @bind="name">
+<input type='text' @bind="Lastname" >
+<input type='number' @bind="day" >
+<input type='number' @bind="Month" >
+<input type='number' @bind="Year" >
+<select name="number">
+    <option value="CheckingAccount">CheckingAccount</option>
+    <option value="Savingaccount">Savingaccount</option>
+
+</select>
+
+<button @onclick="CreateCustomer"> Create Customer</button>
+<button @onclick="StoreAccount"> Save account</button>
+@code{
+
+
+    string name;
+    string Lastname;
+    int day;
+    int Month;
+    int Year;
+    Banksystem.Customer customer;
+
+    public void CreateCustomer()
+    {
+        customer = new Customer(name, Lastname,day,Month,Year);
+        var  account  = new CheckingAccount(customer);
+        Bank.Accounts.Add(account);
+    }
+    public void LoadedAccount()
+    {
+        Bank.LoadAccounts();
+
+    }
+    public void StoreAccount()
+    {
+        Bank.SaveAccounts();
+    }
+
+}
