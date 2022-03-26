@@ -7,59 +7,68 @@ using System.IO;
 namespace Banksystem;
 public class Customer : IValidate
 {
-    public string Name{get;set;}
-    public string Lastname{get;set;}
-    public int Age{get;set;}
-    public DateTime Birthdate{get;set;}
+    public string Name { get; set; }
+    public string Lastname { get; set; }
+    public int Age { get; set; }
+    public DateTime Birthdate { get; set; }
+    public int Balance = 0;
 
-    
+    public int getBalance()
+    {
+        return Balance;
+    }
+
+
     public Customer(string name, string LastName, int day, int month, int year)
     {
-        Name = name;
-        Lastname = LastName;
-        Birthdate = new DateTime(year,month,day);
-        
+        if (ValidateLastName(LastName) == true)
+        {
+            Lastname = LastName;
+        }
+        if (ValidateName(name))
+        {
+
+            Name = name;
+        }
+        Birthdate = new DateTime(year, month, day);
+
+
     }
 
     public void MakeAccount(string name, string LastName, int day, int month, int year)
     {
+
         Customer customer = new Customer(name, LastName, day, month, year);
         var json = JsonSerializer.Serialize(customer);
         File.WriteAllText("accounts.json", json);
 
     }
 
-        public void ValidateLastName(string LastName)
+    public bool ValidateLastName(string LastName)
     {
         if (LastName.Length == 0)
         {
-            Console.WriteLine("Name to short");
-
-        }
-        else if (LastName == " ")
-        {
-            Console.WriteLine("Name is empty");
+            throw new Exception("Name to short");
         }
         else
         {
             Lastname = LastName;
+            return true;
         }
+
     }
 
-    public void ValidateName(string name)
+    public bool ValidateName(string name)
     {
         if (name.Length == 0)
         {
-            Console.WriteLine("Name to short");
+            throw new Exception("Name to short");
 
-        }
-        else if (name == " ")
-        {
-            Console.WriteLine("Name is empty");
         }
         else
         {
             Name = name;
+            return true;
         }
     }
 }

@@ -1,21 +1,26 @@
-﻿@page "/"
+﻿    @page "/"
 @using Banksystem
 
 
 <PageTitle>Index</PageTitle>
-
-<h1>Create an account</h1>
-
-<input type='text' @bind="name">
-<input type='text' @bind="Lastname" >
-<input type='number' @bind="day" >
-<input type='number' @bind="Month" >
-<input type='number' @bind="Year" >
+<h1>Please enter your Information</h1>
+<h2>Create an account</h2>
+<p>Name: 
+<input type='text' @bind="name"><br></p>
+<p>Lastname: 
+<input type='text' @bind="Lastname" ><br></p>
+<p>birthday day:
+<input type='number' @bind="day" ><br></p>
+<p>birthday month: 
+<input type='number' @bind="Month" ><br></p>
+<p>birtday year: 
+<input type='number' @bind="Year" ><br></p>
+<p>Kind of Account:
 <select name="number">
     <option value="CheckingAccount">CheckingAccount</option>
     <option value="Savingaccount">Savingaccount</option>
-
 </select>
+</p>
 
 <button @onclick="CreateCustomer"> Create Customer</button>
 <button @onclick="StoreAccount"> Save account</button>

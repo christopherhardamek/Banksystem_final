@@ -1,6 +1,6 @@
 using NUnit.Framework;
 
-namespace Bank_test;
+namespace Banksystem;
 
 public class Tests
 {
@@ -10,8 +10,9 @@ public class Tests
     }
 
     [Test]
-    public void Test1()
+    public void getBalance()
     {
-        Assert.Pass();
+        Customer customer = new Customer("Peter","Nachname",22,12,1920);
+        Assert.AreEqual(0,customer.getBalance());
     }
 }
