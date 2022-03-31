@@ -1,7 +1,8 @@
 @page "/account/{name}"
 @using Banksystem
 
-<h1>@name, @lastname</h1>
+
+<h1>Welcome @name, @SelectedAccount.Owner.Lastname</h1>
 
 @if (SelectedAccount == null)
 {
@@ -17,7 +18,26 @@ else
         <input @bind=depositAmount />
     </label>
     <button @onclick=makeDeposit>Make Deposit</button>
+
+
+<h2>Account Information</h2>
+
 }
+Name: @SelectedAccount.Owner.Name
+<br>
+Lastname: @SelectedAccount.Owner.Lastname
+<br>
+Balance: @SelectedAccount.Owner.Balance;
+<br>
+Birhtdate:
+<br>
+Day: @SelectedAccount.Owner.Birthdate.Day
+<br>
+Month: @SelectedAccount.Owner.Birthdate.Month
+<br>
+Year: @SelectedAccount.Owner.Birthdate.Year
+<br>
+
 
 
 @code {
@@ -25,26 +45,30 @@ else
     public string name { get; set; }
     public string lastname { get; set; }
     public string AccountName { get; set; }
-    public string customer;
+    int day;
+    int Month;
+    int Year;
+
     decimal depositAmount;
     public Banksystem.Account SelectedAccount;
 
     protected override void OnInitialized()
     {
         Bank.LoadAccounts();
-        foreach (var account in Bank.Accounts)
+        foreach (var name in Bank.Accounts)
         {
-             if (account.Owner.Name == name)
+            if (name.Owner.Name == this.name)
             {
-                SelectedAccount =  account;
+                SelectedAccount = name;
                 break;
-            } 
+            }
         }
+
     }
 
     void makeDeposit()
     {
-        SelectedAccount.MakeDeposit(depositAmount);
+        SelectedAccount.Owner.MakeDeposit(depositAmount);
         Bank.SaveAccounts();
     }
 }

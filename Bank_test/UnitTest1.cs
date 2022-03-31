@@ -12,7 +12,7 @@ public class Tests
     [Test]
     public void getBalance()
     {
-        Customer customer = new Customer("Peter","Nachname",22,12,1920,false);
+        Customer customer = new Customer("Peter","Nachname",22,12,1920,50);
         Assert.AreEqual(0,customer.Balance);
     }
 }
