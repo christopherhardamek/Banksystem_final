@@ -17,7 +17,6 @@ public class Customer : IValidate
 
 
     private List<Account> accounts = new();
-    public IEnumerable<Account> Accounts => accounts;
     public Customer(string name, string LastName, int day, int month, int year, decimal Balance)
     {
         if (ValidateLastName(LastName) == true)
@@ -71,8 +70,16 @@ public class Customer : IValidate
     }
     public void MakeDeposit(decimal depositAmount)
     {
+        foreach (var customer in Bank.Accounts)
+            {
+                if (customer.Owner.Name == Name)
+                {
+                    customer.Owner.Balance += depositAmount;
+                    break;
+                }
+            }
         Console.WriteLine($"Adding money {depositAmount} to {Name}");
         this.Balance += depositAmount;
-        Bank.SaveAccounts();
+        //Bank.SaveAccounts();
     }
 }
