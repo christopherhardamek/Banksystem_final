@@ -11,7 +11,7 @@ public class Customer : IValidate
     public string Lastname { get; set; }
     public int Age { get; set; }
     public DateTime Birthdate { get; set; }
-    public decimal Balance { get; private set; }
+    public decimal Balance { get; set; }
     public bool savingaccount;
 
 
@@ -71,6 +71,8 @@ public class Customer : IValidate
     }
     public void MakeDeposit(decimal depositAmount)
     {
-        Balance = Balance + depositAmount;
+        Console.WriteLine($"Adding money {depositAmount} to {Name}");
+        this.Balance += depositAmount;
+        Bank.SaveAccounts();
     }
 }

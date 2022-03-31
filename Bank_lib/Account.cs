@@ -2,7 +2,6 @@ namespace Banksystem
 {
     public class Account
     {
-        public decimal Balance { get; private set; }
         public Customer Owner { get; set; }
 
         public Account(Customer owner)
@@ -12,7 +11,7 @@ namespace Banksystem
 
         public void MakeDeposit(decimal depositAmount)
         {
-            Balance = Balance + depositAmount;
+            Owner.Balance =+ depositAmount;
         }
     }
 }

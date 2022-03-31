@@ -12,8 +12,11 @@ public static class Bank
         {
             var json = File.ReadAllText("../accounts.json");
             Accounts = JsonSerializer.Deserialize<List<Account>>(json);
-        }else{
+        }else
+        {
             Accounts= new List<Account>();
+            var json = JsonSerializer.Serialize(Accounts);
+            File.WriteAllText("../accounts.json", json);
         }
     }
     public static void SaveAccounts()
