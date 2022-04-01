@@ -59,7 +59,7 @@ public class Customer : IValidate
     {
         if (name.Length == 0)
         {
-            throw new Exception("Name to short");
+            throw new Exception("Name too short");
 
         }
         else
@@ -71,15 +71,30 @@ public class Customer : IValidate
     public void MakeDeposit(decimal depositAmount)
     {
         foreach (var customer in Bank.Accounts)
+        {
+            if (customer.Owner.Name == Name)
             {
-                if (customer.Owner.Name == Name)
-                {
-                    customer.Owner.Balance += depositAmount;
-                    break;
-                }
+                customer.Owner.Balance += depositAmount;
+                break;
             }
+        }
         Console.WriteLine($"Adding money {depositAmount} to {Name}");
         this.Balance += depositAmount;
         //Bank.SaveAccounts();
+    }
+    public void Withdrawn(decimal depositAmount)
+    {
+        foreach (var customer in Bank.Accounts)
+        {
+            if (customer.Owner.Name == Name)
+            {
+                if (Balance - depositAmount >= -500)
+                {
+                    customer.Owner.Balance -= depositAmount;
+                }
+                break;
+            }
+        }
+        Console.WriteLine($"subract money {depositAmount} to {Name}");
     }
 }

@@ -17,7 +17,8 @@ else
     <label>Deposit Amount
         <input @bind=depositAmount />
     </label>
-    <button @onclick=makeDeposit>Make Deposit</button>
+    <button @onclick="makeDeposit">Make Deposit</button>
+    <button @onclick="Withdraw">withdrawn</button>
 
 
     <h2>Account Information</h2>
@@ -74,7 +75,14 @@ else
     void makeDeposit()
     {
         SelectedAccount.Owner.MakeDeposit(depositAmount);
-        
+
         Bank.SaveAccounts();
     }
+    void Withdraw()
+    {
+        SelectedAccount.Owner.Withdrawn(depositAmount);
+
+        Bank.SaveAccounts();
+    }
+
 }
