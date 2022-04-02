@@ -8,10 +8,5 @@ namespace Banksystem
         {
             Owner = owner;
         }
-
-        public void MakeDeposit(decimal depositAmount)
-        {
-            Owner.Balance =+ depositAmount;
-        }
     }
 }

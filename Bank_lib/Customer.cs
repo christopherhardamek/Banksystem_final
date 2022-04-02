@@ -16,7 +16,7 @@ public class Customer : IValidate
 
 
 
-    private List<Account> accounts = new();
+    //private List<Account> accounts = new();
     public Customer(string name, string LastName, int day, int month, int year, decimal Balance)
     {
         if (ValidateLastName(LastName) == true)
@@ -88,7 +88,7 @@ public class Customer : IValidate
         {
             if (customer.Owner.Name == Name)
             {
-                if (Balance - depositAmount >= -500)
+                if (customer.Owner.Balance - depositAmount >= -500)
                 {
                     customer.Owner.Balance -= depositAmount;
                 }
