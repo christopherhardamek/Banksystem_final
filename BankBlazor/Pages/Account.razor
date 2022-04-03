@@ -69,19 +69,28 @@ else
 
         }
         Bank.LoadAccounts();
+        logging.LoadLog();
 
     }
-
+    Banksystem.Customer logging;
     void makeDeposit()
     {
         SelectedAccount.Owner.MakeDeposit(depositAmount);
-
+        Customer logs = $"subract money {depositAmount} to {name}";
+        logging = new Customer(logs);
+        Banksystem.Customer.Makelog(logging);
         Bank.SaveAccounts();
+        logging.Savelog();
+
+
+        customer = new Customer(name, Lastname, day, Month, Year,balance);
+        var account = new CheckingAccount(customer);
     }
     void Withdraw()
     {
         SelectedAccount.Owner.Withdrawn(depositAmount);
         Bank.SaveAccounts();
+        logging.Savelog();
     }
 
 }

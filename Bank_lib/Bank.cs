@@ -25,4 +25,6 @@ public static class Bank
         var json = JsonSerializer.Serialize(Accounts);
         File.WriteAllText("../accounts.json", json);
     }
+    
+
 }
