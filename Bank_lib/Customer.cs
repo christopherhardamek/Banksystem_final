@@ -13,7 +13,7 @@ public class Customer : IValidate
     public DateTime Birthdate { get; set; }
     public decimal Balance { get; set; }
     public bool savingaccount;
-    public Customer Log;
+    public string log;
 
 
     public Customer(string name, string LastName, int day, int month, int year, decimal Balance)
@@ -33,79 +33,73 @@ public class Customer : IValidate
     }
     public Customer() { }
 
-    public Customer(Customer log)
-    {
-        Log = log;
-    }
+   
     public void MakeAccount(string name, string LastName, int day, int month, int year, decimal Balance)
     {
         Customer customer = new Customer(name, LastName, day, month, year, Balance);
-        var json = JsonSerializer.Serialize(customer);
-        File.WriteAllText("../accounts.json", json);
-    }
-    public static void Makelog(Customer log)
-    {
-        Customer customer = new Customer(log);
-        var json = JsonSerializer.Serialize(log);
-        File.WriteAllText("../logs.json", json);
+        var account  = new  Account(customer);
+        Bank.Accounts.Add(account);
+        Bank.SaveAccounts();
+        logging.logs.Add($"Added account for {name} on {DateTime.Now}");
+        logging.Savelog();
     }
 
 
-public bool ValidateLastName(string LastName)
-{
-    if (LastName.Length == 0)
+    public bool ValidateLastName(string LastName)
     {
-        throw new Exception("Name too short");
-    }
-    else
-    {
-        Lastname = LastName;
-        return true;
-    }
-
-}
-
-public bool ValidateName(string name)
-{
-    if (name.Length == 0)
-    {
-        throw new Exception("Name too short");
-
-    }
-    else
-    {
-        Name = name;
-        return true;
-    }
-}
-public void MakeDeposit(decimal depositAmount)
-{
-    foreach (var customer in Bank.Accounts)
-    {
-        if (customer.Owner.Name == Name)
+        if (LastName.Length == 0)
         {
-            customer.Owner.Balance += depositAmount;
-            break;
+            throw new Exception("Name too short");
+        }
+        else
+        {
+            Lastname = LastName;
+            return true;
+        }
+
+    }
+
+    public bool ValidateName(string name)
+    {
+        if (name.Length == 0)
+        {
+            throw new Exception("Name too short");
+
+        }
+        else
+        {
+            Name = name;
+            return true;
         }
     }
-    Console.WriteLine($"Adding money {depositAmount} to {Name}");
-
-    this.Balance += depositAmount;
-}
-public void Withdrawn(decimal depositAmount)
-{
-    foreach (var customer in Bank.Accounts)
+    public void MakeDeposit(decimal depositAmount)
     {
-        if (customer.Owner.Name == Name)
+        foreach (var customer in Bank.Accounts)
         {
-            if ((customer.Owner.Balance - depositAmount) >= -500)
+            if (customer.Owner.Name == Name)
             {
-                customer.Owner.Balance -= depositAmount;
-
+                customer.Owner.Balance += depositAmount;
+                break;
             }
-            break;
         }
+        Console.WriteLine($"Adding money {depositAmount} to {Name}");
+
+        this.Balance += depositAmount;
     }
-    Console.WriteLine($"subract money {depositAmount} to {Name}");
-}
+    public void Withdrawn(decimal depositAmount)
+    {
+        foreach (var customer in Bank.Accounts)
+        {
+            if (customer.Owner.Name == Name)
+            {
+                if ((customer.Owner.Balance - depositAmount) >= -500)
+                {
+                    customer.Owner.Balance -= depositAmount;
+
+                }
+            break;
+            }
+        }
+        Console.WriteLine($"Subract money {depositAmount} to {Name}");
+    }
 }

@@ -5,7 +5,7 @@ using System.Text.Json;
 namespace Banksystem;
 public static class Bank
 {
-    static public List<Account> Accounts { get; set; } = new();
+    public static List<Account> Accounts { get; set; } = new();
     
     public static void LoadAccounts()
     {

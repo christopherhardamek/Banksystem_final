@@ -40,9 +40,13 @@ else
     <br>
 }
 
+@log
 
 
-@code {
+
+@code 
+{
+
     [Parameter]
     public string name { get; set; }
     public string lastname { get; set; }
@@ -50,6 +54,7 @@ else
     int day;
     int Month;
     int Year;
+    string log;
 
     decimal depositAmount;
     public Banksystem.Account SelectedAccount;
@@ -70,22 +75,18 @@ else
         }
         Bank.LoadAccounts();
         logging.LoadLog();
-
     }
-    Banksystem.Customer logging;
+
     void makeDeposit()
     {
+        
         SelectedAccount.Owner.MakeDeposit(depositAmount);
-        Customer logs = $"subract money {depositAmount} to {name}";
-        logging = new Customer(logs);
-        Banksystem.Customer.Makelog(logging);
-        Bank.SaveAccounts();
+        log = $"Adding money {depositAmount} to {name}";
+
+        logging.logs.Add(log);
         logging.Savelog();
-
-
-        customer = new Customer(name, Lastname, day, Month, Year,balance);
-        var account = new CheckingAccount(customer);
-    }
+        Bank.SaveAccounts();
+    } 
     void Withdraw()
     {
         SelectedAccount.Owner.Withdrawn(depositAmount);
