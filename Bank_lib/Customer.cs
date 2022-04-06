@@ -11,12 +11,14 @@ public class Customer : IValidate
     public string Lastname { get; set; }
     public int Age { get; set; }
     public DateTime Birthdate { get; set; }
-    public decimal Balance { get; set; }
+    public decimal CheckingBalance { get; set; }
     public bool savingaccount;
+    public decimal SavingBalance { get; set; }
     public string log;
+    private decimal MaxBalance = -500;
 
 
-    public Customer(string name, string LastName, int day, int month, int year, decimal Balance)
+    public Customer(string name, string LastName, int day, int month, int year, decimal CheckingBalance, bool Savingaccount)
     {
         if (ValidateLastName(LastName) == true)
         {
@@ -26,22 +28,27 @@ public class Customer : IValidate
         {
             Name = name;
         }
+        savingaccount = Savingaccount;
 
         Birthdate = new DateTime(year, month, day);
-        this.Balance = Balance;
+        this.CheckingBalance = CheckingBalance;
 
     }
     public Customer() { }
 
-   
-    public void MakeAccount(string name, string LastName, int day, int month, int year, decimal Balance)
+
+    public void MakeAccount(string name, string LastName, int day, int month, int year, decimal  Checkingbalance, bool Savingaccount)
     {
-        Customer customer = new Customer(name, LastName, day, month, year, Balance);
-        var account  = new  Account(customer);
+        Customer customer = new Customer(name, LastName, day, month, year, Checkingbalance, Savingaccount);
+        var account = new Account(customer);
         Bank.Accounts.Add(account);
         Bank.SaveAccounts();
         logging.logs.Add($"Added account for {name} on {DateTime.Now}");
         logging.Savelog();
+    }
+    public bool MakeSavingAccount()
+    {
+        return savingaccount = true;
     }
 
 
@@ -78,13 +85,13 @@ public class Customer : IValidate
         {
             if (customer.Owner.Name == Name)
             {
-                customer.Owner.Balance += depositAmount;
+                customer.Owner.CheckingBalance += depositAmount;
                 break;
             }
         }
-        Console.WriteLine($"Adding money {depositAmount} to {Name}");
-
-        this.Balance += depositAmount;
+        log = $"Adding money {depositAmount} to {Name} new Balance: {CheckingBalance} on {DateTime.Now}";
+        logging.logs.Add(log);
+        logging.Savelog();
     }
     public void Withdrawn(decimal depositAmount)
     {
@@ -92,14 +99,16 @@ public class Customer : IValidate
         {
             if (customer.Owner.Name == Name)
             {
-                if ((customer.Owner.Balance - depositAmount) >= -500)
+                if ((depositAmount - customer.Owner.CheckingBalance) < MaxBalance)
                 {
-                    customer.Owner.Balance -= depositAmount;
+                    customer.Owner.CheckingBalance -= depositAmount;
+                    log = $"Substract money {depositAmount} to {Name} new Balance: {CheckingBalance} on {DateTime.Now}";
+                    logging.logs.Add(log);
+                    logging.Savelog();
 
                 }
-            break;
+                break;
             }
         }
-        Console.WriteLine($"Subract money {depositAmount} to {Name}");
     }
 }

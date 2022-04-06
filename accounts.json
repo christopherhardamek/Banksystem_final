@@ -1,1 +1,12 @@
-[{"Owner":{"Name":"asdas","Lastname":"asda","Age":0,"Birthdate":"0001-01-01T00:00:00","Balance":0}},{"Owner":{"Name":"Track","Lastname":"Trick","Age":0,"Birthdate":"2222-01-01T00:00:00","Balance":945}}]
+[
+    {
+        "Owner": {
+            "Name": "Trick",
+            "Lastname": "Track",
+            "Age": 0,
+            "Birthdate": "1930-12-22T00:00:00",
+            "CheckingBalance": 50,
+            "SavingBalance": 0
+        }
+    }
+]

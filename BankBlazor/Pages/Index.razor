@@ -28,6 +28,7 @@
 }
 @foreach (var customer in Bank.Accounts )
 {  
+    Account:
     <a href="/account/@customer.Owner.Name">
     @customer.Owner.Name, @customer.Owner.Lastname<br>
     </a> <br/>
@@ -51,11 +52,12 @@
     int Year;
     bool Savingaccount=false;
     int  balance= 50;
+
     Banksystem.Customer customer;
 
     public void CreateCustomer()
     {
-        customer = new Customer(name, Lastname, day, Month, Year,balance);
+        customer = new Customer(name, Lastname, day, Month, Year,balance,Savingaccount = false);
         var account = new CheckingAccount(customer);
         Bank.Accounts.Add(account);
         Bank.SaveAccounts();

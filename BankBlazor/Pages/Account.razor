@@ -1,6 +1,8 @@
 @page "/account/{name}"
 @using Banksystem
 
+@using System.Linq;
+
 
 
 @if (SelectedAccount == null)
@@ -13,7 +15,11 @@ else
     <h1>Welcome @name, @SelectedAccount.Owner.Lastname</h1>
 
     <h1>@AccountName</h1>
-    <p>Current Balance: @SelectedAccount.Owner.Balance</p>
+    <p>Current Checkingbalance: @SelectedAccount.Owner.CheckingBalance</p>
+    @if(SelectedAccount.Owner.savingaccount==true)
+    {
+        <p>Current Savingbalance: @SelectedAccount.Owner.SavingBalance</p>
+    }   
     <label>Deposit Amount
         <input @bind=depositAmount />
     </label>
@@ -25,28 +31,47 @@ else
 
 
     <p>Name: @SelectedAccount.Owner.Name</p>
-    <br>
     <p>Lastname: @SelectedAccount.Owner.Lastname</p>
-    <br>
-    <p>Balance: @SelectedAccount.Owner.Balance</p>
-    <br>
+    <p>Balance: @SelectedAccount.Owner.CheckingBalance</p>
     <p>Birhtdate:</p>
-    <br>
     <p>Day: @SelectedAccount.Owner.Birthdate.Day</p>
-    <br>
     <p>Month: @SelectedAccount.Owner.Birthdate.Month</p>
-    <br>
     <p>Year: @SelectedAccount.Owner.Birthdate.Year</p>
-    <br>
 }
+
+@if(SelectedAccount.Owner.savingaccount == false)
+{
+    <button @onclick="Createsavingaccount">Create Savingaccount</button>
+}
+
 
 @log
 
+<h3>Activities:</h3>
 
 
-@code 
+@*
+    @foreach(var item in from a in logging.logs
+    //where a.Balance == 0
+    .OrderByDescending(a => Customer.Owner.name)
+    select new
+    {
+    Name = a.Name,
+    Balance = a.Balance,
+    HashCode = a.GetHashCode()
+    }) *@
+
+
+@foreach (var customer in logging.logs)
 {
 
+    @customer
+    <br>
+}
+
+
+@code
+{
     [Parameter]
     public string name { get; set; }
     public string lastname { get; set; }
@@ -55,6 +80,7 @@ else
     int Month;
     int Year;
     string log;
+    bool Savingaccount;
 
     decimal depositAmount;
     public Banksystem.Account SelectedAccount;
@@ -77,16 +103,18 @@ else
         logging.LoadLog();
     }
 
+    void Createsavingaccount()
+    {
+        SelectedAccount.Owner.MakeSavingAccount();
+    }
     void makeDeposit()
     {
-        
-        SelectedAccount.Owner.MakeDeposit(depositAmount);
-        log = $"Adding money {depositAmount} to {name}";
 
-        logging.logs.Add(log);
-        logging.Savelog();
+        SelectedAccount.Owner.MakeDeposit(depositAmount);
+
+
         Bank.SaveAccounts();
-    } 
+    }
     void Withdraw()
     {
         SelectedAccount.Owner.Withdrawn(depositAmount);
