@@ -15,7 +15,6 @@ public class Customer : IValidate
     public bool savingaccount;
     public decimal SavingBalance { get; set; }
     public string log;
-    private decimal MaxBalance = -500;
 
 
     public Customer(string name, string LastName, int day, int month, int year, decimal CheckingBalance, bool Savingaccount)
@@ -37,14 +36,14 @@ public class Customer : IValidate
     public Customer() { }
 
 
-    public void MakeAccount(string name, string LastName, int day, int month, int year, decimal  Checkingbalance, bool Savingaccount)
+    public void MakeAccount(string name, string LastName, int day, int month, int year, decimal Checkingbalance, bool Savingaccount)
     {
         Customer customer = new Customer(name, LastName, day, month, year, Checkingbalance, Savingaccount);
         var account = new Account(customer);
-        Bank.Accounts.Add(account);
-        Bank.SaveAccounts();
         logging.logs.Add($"Added account for {name} on {DateTime.Now}");
         logging.Savelog();
+        Bank.Accounts.Add(account);
+        Bank.SaveAccounts();
     }
     public bool MakeSavingAccount()
     {
@@ -86,10 +85,12 @@ public class Customer : IValidate
             if (customer.Owner.Name == Name)
             {
                 customer.Owner.CheckingBalance += depositAmount;
+                log = $"Adding money {depositAmount} to {Name} new Balance: {CheckingBalance} on {DateTime.Now}";
+                Bank.SaveAccounts();
                 break;
             }
         }
-        log = $"Adding money {depositAmount} to {Name} new Balance: {CheckingBalance} on {DateTime.Now}";
+        Bank.SaveAccounts();
         logging.logs.Add(log);
         logging.Savelog();
     }
@@ -99,13 +100,12 @@ public class Customer : IValidate
         {
             if (customer.Owner.Name == Name)
             {
-                if ((depositAmount - customer.Owner.CheckingBalance) < MaxBalance)
+                if ((CheckingBalance - depositAmount)  <= -500)
                 {
-                    customer.Owner.CheckingBalance -= depositAmount;
+                    CheckingBalance -= depositAmount;
                     log = $"Substract money {depositAmount} to {Name} new Balance: {CheckingBalance} on {DateTime.Now}";
                     logging.logs.Add(log);
                     logging.Savelog();
-
                 }
                 break;
             }

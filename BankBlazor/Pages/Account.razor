@@ -50,24 +50,26 @@ else
 <h3>Activities:</h3>
 
 
-@*
-    @foreach(var item in from a in logging.logs
-    //where a.Balance == 0
-    .OrderByDescending(a => Customer.Owner.name)
-    select new
-    {
-    Name = a.Name,
-    Balance = a.Balance,
-    HashCode = a.GetHashCode()
-    }) *@
+
+@foreach(var item in from a in Bank.Accounts
+                     select new
+                     {
+                         Name = a.Owner.Name,
+                         Balance = a.Owner.CheckingBalance
+                         //Balance = a.Owner.CheckingBalance,
+                     })
+{
+    <span> @item.Name has a Balance of @item.Balance </span><br/>
+}
+ 
 
 
-@foreach (var customer in logging.logs)
+@* @foreach (var customer in logging.logs)
 {
 
     @customer
     <br>
-}
+} *@
 
 
 @code
@@ -106,13 +108,11 @@ else
     void Createsavingaccount()
     {
         SelectedAccount.Owner.MakeSavingAccount();
+        Bank.SaveAccounts();
     }
     void makeDeposit()
     {
-
         SelectedAccount.Owner.MakeDeposit(depositAmount);
-
-
         Bank.SaveAccounts();
     }
     void Withdraw()
