@@ -64,12 +64,12 @@ else
  
 
 
-@* @foreach (var customer in logging.logs)
+@foreach (var log in customerLogs)
 {
 
-    @customer
+    @log
     <br>
-} *@
+}
 
 
 @code
@@ -83,6 +83,7 @@ else
     int Year;
     string log;
     bool Savingaccount;
+    IEnumerable<string> customerLogs;
 
     decimal depositAmount;
     public Banksystem.Account SelectedAccount;
@@ -103,6 +104,9 @@ else
         }
         Bank.LoadAccounts();
         logging.LoadLog();
+        customerLogs = from log in logging.logs
+                        where log.Contains(SelectedAccount.Owner.Name)
+                        select log;
     }
 
     void Createsavingaccount()
