@@ -51,13 +51,14 @@
     int Month;
     int Year;
     bool Savingaccount=false;
+    decimal savingbalance =0;
     int  balance= 50;
 
     Banksystem.Customer customer;
 
     public void CreateCustomer()
     {
-        customer = new Customer(name, Lastname, day, Month, Year,balance,Savingaccount = false);
+        customer = new Customer(name, Lastname, day, Month, Year,balance,Savingaccount,savingbalance);
         var account = new CheckingAccount(customer);
         Bank.Accounts.Add(account);
         Bank.SaveAccounts();

@@ -14,12 +14,27 @@ else
 {
     <h1>Welcome @name, @SelectedAccount.Owner.Lastname</h1>
 
-    <h1>@AccountName</h1>
-    <p>Current Checkingbalance: @SelectedAccount.Owner.CheckingBalance</p>
-    @if(SelectedAccount.Owner.savingaccount==true)
+
+    @foreach (var item in from a in Bank.Accounts
+                         select new
+                         {
+                             Name = a.Owner.Name,
+                             Balance = a.Owner.CheckingBalance
+                             //Balance = a.Owner.CheckingBalance,
+                         })
     {
+        <span> Current Checkingbalance: @item.Balance </span><br />
+    }
+    @if (SelectedAccount.Owner.savingaccount == true)
+    {
+        <br>
         <p>Current Savingbalance: @SelectedAccount.Owner.SavingBalance</p>
-    }   
+        <label>Deposit Amount
+            <input @bind=TransferMoney />
+        </label>
+        <button @onclick="TransferMoneyToSaving">Transfer to Saving</button>
+        <button @onclick="TransfertMoneyToChecking">Transfer to Checking</button><br>
+    }
     <label>Deposit Amount
         <input @bind=depositAmount />
     </label>
@@ -37,9 +52,10 @@ else
     <p>Day: @SelectedAccount.Owner.Birthdate.Day</p>
     <p>Month: @SelectedAccount.Owner.Birthdate.Month</p>
     <p>Year: @SelectedAccount.Owner.Birthdate.Year</p>
+    <p>Savingaccount: @SelectedAccount.Owner.savingaccount</p>
 }
 
-@if(SelectedAccount.Owner.savingaccount == false)
+@if (SelectedAccount.Owner.savingaccount == false)
 {
     <button @onclick="Createsavingaccount">Create Savingaccount</button>
 }
@@ -51,17 +67,6 @@ else
 
 
 
-@foreach(var item in from a in Bank.Accounts
-                     select new
-                     {
-                         Name = a.Owner.Name,
-                         Balance = a.Owner.CheckingBalance
-                         //Balance = a.Owner.CheckingBalance,
-                     })
-{
-    <span> @item.Name has a Balance of @item.Balance </span><br/>
-}
- 
 
 
 @foreach (var log in customerLogs)
@@ -83,9 +88,11 @@ else
     int Year;
     string log;
     bool Savingaccount;
+    decimal savingbalance = 0;
     IEnumerable<string> customerLogs;
 
     decimal depositAmount;
+    decimal TransferMoney;
     public Banksystem.Account SelectedAccount;
 
     protected override void OnInitialized()
@@ -105,12 +112,13 @@ else
         Bank.LoadAccounts();
         logging.LoadLog();
         customerLogs = from log in logging.logs
-                        where log.Contains(SelectedAccount.Owner.Name)
-                        select log;
+                       where log.Contains(SelectedAccount.Owner.Name)
+                       select log;
     }
 
     void Createsavingaccount()
     {
+        SelectedAccount.Owner.savingaccount = true;
         SelectedAccount.Owner.MakeSavingAccount();
         Bank.SaveAccounts();
     }
@@ -122,6 +130,18 @@ else
     void Withdraw()
     {
         SelectedAccount.Owner.Withdrawn(depositAmount);
+        Bank.SaveAccounts();
+        logging.Savelog();
+    }
+    void TransferMoneyToSaving()
+    {
+        SelectedAccount.Owner.TransferMoneyFromCheckingToSaving(TransferMoney);
+        Bank.SaveAccounts();
+        logging.Savelog();
+    }
+    void TransfertMoneyToChecking()
+    {
+        SelectedAccount.Owner.TransferMoneyFromCheckingToSaving(TransferMoney);
         Bank.SaveAccounts();
         logging.Savelog();
     }
