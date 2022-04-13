@@ -14,17 +14,7 @@ else
 {
     <h1>Welcome @name, @SelectedAccount.Owner.Lastname</h1>
 
-
-    @foreach (var item in from a in Bank.Accounts
-                         select new
-                         {
-                             Name = a.Owner.Name,
-                             Balance = a.Owner.CheckingBalance
-                             //Balance = a.Owner.CheckingBalance,
-                         })
-    {
-        <span> Current Checkingbalance: @item.Balance </span><br />
-    }
+        <span> Current Checkingbalance: @SelectedAccount.Owner.CheckingBalance.ToString("c") </span><br />
     @if (SelectedAccount.Owner.savingaccount == true)
     {
         <br>
@@ -64,10 +54,6 @@ else
 @log
 
 <h3>Activities:</h3>
-
-
-
-
 
 @foreach (var log in customerLogs)
 {
@@ -137,11 +123,12 @@ else
     {
         SelectedAccount.Owner.TransferMoneyFromCheckingToSaving(TransferMoney);
         Bank.SaveAccounts();
-        logging.Savelog();
+        logging.Savelog(); 
+        StateHasChanged();
     }
     void TransfertMoneyToChecking()
     {
-        SelectedAccount.Owner.TransferMoneyFromCheckingToSaving(TransferMoney);
+        SelectedAccount.Owner.TransferMoneyFromSavingToChecking(TransferMoney);
         Bank.SaveAccounts();
         logging.Savelog();
     }

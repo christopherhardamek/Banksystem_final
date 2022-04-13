@@ -13,13 +13,15 @@ public class Customer : IValidate
     public DateTime Birthdate { get; set; }
     public decimal CheckingBalance { get; set; }
     public bool savingaccount { get; set; }
+    public bool Credit { get; private set; }
     public decimal SavingBalance { get; set; }
-    public string log;
+    public string log { get; set; }
+    public decimal creditamount { get; set; }
 
 
     public Customer(string name, string LastName,
     int day, int month, int year, decimal CheckingBalance,
-    bool Savingaccount, decimal SavingBalance)
+    bool Savingaccount, decimal SavingBalance, bool Credit)
     {
         if (ValidateLastName(LastName) == true)
         {
@@ -35,6 +37,7 @@ public class Customer : IValidate
         this.savingaccount = Savingaccount;
         this.CheckingBalance = CheckingBalance;
         this.SavingBalance = SavingBalance;
+        this.Credit = Credit;
 
     }
     public Customer() { }
@@ -45,7 +48,7 @@ public class Customer : IValidate
                             decimal Checkingbalance, bool Savingaccount,
                             decimal savingBalance)
     {
-        Customer customer = new Customer(name, LastName, day, month, year, Checkingbalance, Savingaccount, savingBalance);
+        Customer customer = new Customer(name, LastName, day, month, year, Checkingbalance, Savingaccount, savingBalance, Credit);
         var account = new Account(customer);
         logging.logs.Add($"Added account for {name} on {DateTime.Now}");
         logging.Savelog();
@@ -104,7 +107,7 @@ public class Customer : IValidate
         {
             if (customer.Owner.Name == Name)
             {
-                if ((CheckingBalance - depositAmount) <= -500)
+                if ((customer.Owner.CheckingBalance - depositAmount) >= -500)
                 {
                     customer.Owner.CheckingBalance -= depositAmount;
                     log = $"Substract money {depositAmount} to {Name} new Balance: {CheckingBalance} on {DateTime.Now}";
@@ -127,7 +130,6 @@ public class Customer : IValidate
                 logging.Savelog();
                 break;
             }
-
         }
         Bank.SaveAccounts();
     }
@@ -137,29 +139,66 @@ public class Customer : IValidate
         {
             if (customer.Owner.Name == Name)
             {
-                customer.Owner.CheckingBalance -= deposit;
-                customer.Owner.SavingBalance += deposit;
-                break;
+
+                if ((customer.Owner.CheckingBalance - deposit) >= -500)
+                {
+                    customer.Owner.CheckingBalance -= deposit;
+                    customer.Owner.SavingBalance += deposit;
+                    logging.logs.Add($"Money Transfered from Checking to Saving new Balance {CheckingBalance}");
+                    break;
+                }
+
             }
+            Bank.SaveAccounts();
 
         }
-        Bank.SaveAccounts();
-
     }
-    public void TransferMoneyFromSavinToChecking(decimal deposit)
+    public void TransferMoneyFromSavingToChecking(decimal deposit)
     {
         foreach (var customer in Bank.Accounts)
         {
             if (customer.Owner.Name == Name)
             {
-                customer.Owner.CheckingBalance = +deposit;
-                customer.Owner.SavingBalance = -deposit;
-                Bank.SaveAccounts();
-                break;
-            }
+                if ((customer.Owner.SavingBalance - deposit) >= 0)
+                {
+                    customer.Owner.CheckingBalance += deposit;
+                    customer.Owner.SavingBalance -= deposit;
+                    Bank.SaveAccounts();
+                    logging.logs.Add($"Money Transfered from Saving to Checking new Balance {CheckingBalance}");
+                    break;
 
+                }
+            }
         }
         Bank.SaveAccounts();
+    }
+    public void getCredit(decimal money)
+    {
+        foreach (var customer in Bank.Accounts)
+        {
+            if (customer.Owner.Name == Name)
+            {
+                Credit = true;
+                customer.Owner.CheckingBalance += money;
+            }
+        }
 
     }
+    public void PayBackCredit(decimal money)
+    {
+        foreach (var customer in Bank.Accounts)
+        {
+            if (customer.Owner.Name == Name)
+            {
+                if ((customer.Owner.CheckingBalance - money) >= 0)
+                {
+                    Credit = false;
+                    customer.Owner.CheckingBalance -= money;
+
+                }
+            }
+        }
+    }
+
 }
+
