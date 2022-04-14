@@ -90,6 +90,10 @@ else
 
     protected override void OnInitialized()
     {
+        OnRefresh();
+    }
+    public void OnRefresh()
+    {
         if (Bank.Accounts.Count > 0)
         {
             foreach (var customer in Bank.Accounts)
@@ -102,11 +106,12 @@ else
             }
 
         }
-        Bank.LoadAccounts();
+        //Bank.LoadAccounts();
         logging.LoadLog();
         customerLogs = from log in logging.logs
                        where log.Contains(SelectedAccount.Owner.Name)
                        select log;
+
     }
 
     void Createsavingaccount()
@@ -114,17 +119,20 @@ else
         SelectedAccount.Owner.savingaccount = true;
         SelectedAccount.Owner.MakeSavingAccount();
         Bank.SaveAccounts();
+        OnRefresh();
     }
     void makeDeposit()
     {
         SelectedAccount.Owner.MakeDeposit(depositAmount);
         Bank.SaveAccounts();
+        OnRefresh();
     }
     void Withdraw()
     {
         SelectedAccount.Owner.Withdrawn(depositAmount);
         Bank.SaveAccounts();
         logging.Savelog();
+        OnRefresh();
     }
     void TransferMoneyToSaving()
     {
@@ -132,24 +140,28 @@ else
         Bank.SaveAccounts();
         logging.Savelog(); 
         StateHasChanged();
+        OnRefresh();
     }
     void TransfertMoneyToChecking()
     {
         SelectedAccount.Owner.TransferMoneyFromSavingToChecking(TransferMoney);
         Bank.SaveAccounts();
         logging.Savelog();
+        OnRefresh();
     }
     void GetCreditMoney()
     {
         SelectedAccount.Owner.getCredit(Creditamount);
         Bank.SaveAccounts();
         logging.Savelog();
+        OnRefresh();
     }
     void PayBackMoney()
     {
         SelectedAccount.Owner.PayBackCredit(Creditamount);
         Bank.SaveAccounts();
         logging.Savelog();
+        OnRefresh();
     }
 
 }
