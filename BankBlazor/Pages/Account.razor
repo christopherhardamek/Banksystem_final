@@ -49,6 +49,12 @@ else
 {
     <button @onclick="Createsavingaccount">Create Savingaccount</button>
 }
+@if (SelectedAccount.Owner.Credit == false)
+{
+    <button @onclick="GetCreditMoney">Get Credit</button>
+    <input @bind=Creditamount /> 
+}
+
 
 
 @log
@@ -75,6 +81,7 @@ else
     string log;
     bool Savingaccount;
     decimal savingbalance = 0;
+    decimal Creditamount=0;
     IEnumerable<string> customerLogs;
 
     decimal depositAmount;
@@ -129,6 +136,18 @@ else
     void TransfertMoneyToChecking()
     {
         SelectedAccount.Owner.TransferMoneyFromSavingToChecking(TransferMoney);
+        Bank.SaveAccounts();
+        logging.Savelog();
+    }
+    void GetCreditMoney()
+    {
+        SelectedAccount.Owner.getCredit(Creditamount);
+        Bank.SaveAccounts();
+        logging.Savelog();
+    }
+    void PayBackMoney()
+    {
+        SelectedAccount.Owner.PayBackCredit(Creditamount);
         Bank.SaveAccounts();
         logging.Savelog();
     }

@@ -182,6 +182,7 @@ public class Customer : IValidate
                 customer.Owner.CheckingBalance += money;
             }
         }
+        Bank.SaveAccounts();
 
     }
     public void PayBackCredit(decimal money)
@@ -198,6 +199,7 @@ public class Customer : IValidate
                 }
             }
         }
+        Bank.SaveAccounts();
     }
 
 }
