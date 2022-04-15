@@ -25,6 +25,8 @@ else
         <button @onclick="TransferMoneyToSaving">Transfer to Saving</button>
         <button @onclick="TransfertMoneyToChecking">Transfer to Checking</button><br>
     }
+
+
     <label>Deposit Amount
         <input @bind=depositAmount />
     </label>
@@ -43,6 +45,7 @@ else
     <p>Month: @SelectedAccount.Owner.Birthdate.Month</p>
     <p>Year: @SelectedAccount.Owner.Birthdate.Year</p>
     <p>Savingaccount: @SelectedAccount.Owner.savingaccount</p>
+    <p>Creditamount: @SelectedAccount.Owner.creditamount</p>
 }
 
 @if (SelectedAccount.Owner.savingaccount == false)
@@ -54,6 +57,10 @@ else
     <button @onclick="GetCreditMoney">Get Credit</button>
     <input @bind=Creditamount /> 
 }
+    @if(SelectedAccount.Owner.CheckingBalance >= SelectedAccount.Owner.creditamount && SelectedAccount.Owner.Credit == true)
+    {
+        <button @onclick="PayBackMoney">Pay Credit back</button>
+    }
 
 
 
@@ -79,7 +86,7 @@ else
     int Month;
     int Year;
     string log;
-    bool Savingaccount;
+    bool Savingaccount = false;
     decimal savingbalance = 0;
     decimal Creditamount=0;
     IEnumerable<string> customerLogs;

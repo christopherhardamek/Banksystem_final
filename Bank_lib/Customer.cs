@@ -13,7 +13,7 @@ public class Customer : IValidate
     public DateTime Birthdate { get; set; }
     public decimal CheckingBalance { get; set; }
     public bool savingaccount { get; set; }
-    public bool Credit { get; private set; }
+    public bool Credit { get; set; }
     public decimal SavingBalance { get; set; }
     public string log { get; set; }
     public decimal creditamount { get; set; }
@@ -21,7 +21,7 @@ public class Customer : IValidate
 
     public Customer(string name, string LastName,
     int day, int month, int year, decimal CheckingBalance,
-    bool Savingaccount, decimal SavingBalance, bool Credit)
+    bool Savingaccount, decimal SavingBalance, bool Credit, decimal creditamount)
     {
         if (ValidateLastName(LastName) == true)
         {
@@ -46,9 +46,9 @@ public class Customer : IValidate
     public void MakeAccount(string name, string LastName,
                             int day, int month, int year,
                             decimal Checkingbalance, bool Savingaccount,
-                            decimal savingBalance)
+                            decimal savingBalance, decimal creditamount)
     {
-        Customer customer = new Customer(name, LastName, day, month, year, Checkingbalance, Savingaccount, savingBalance, Credit);
+        Customer customer = new Customer(name, LastName, day, month, year, Checkingbalance, Savingaccount, savingBalance, Credit, creditamount);
         var account = new Account(customer);
         logging.logs.Add($"Added account for {name} on {DateTime.Now}");
         logging.Savelog();
@@ -178,8 +178,11 @@ public class Customer : IValidate
         {
             if (customer.Owner.Name == Name)
             {
+                customer.Owner.creditamount = money;
                 Credit = true;
                 customer.Owner.CheckingBalance += money;
+                logging.logs.Add($"The credit in High of {money} added to the Checkingbalance");
+                logging.Savelog();
             }
         }
         Bank.SaveAccounts();
@@ -193,9 +196,11 @@ public class Customer : IValidate
             {
                 if ((customer.Owner.CheckingBalance - money) >= 0)
                 {
-                    Credit = false;
                     customer.Owner.CheckingBalance -= money;
-
+                    customer.Owner.creditamount = 0;
+                    logging.logs.Add($"The credit in High of {money} substracted from the Checkingbalance");  
+                    logging.Savelog();
+                    Credit = false;
                 }
             }
         }

@@ -54,12 +54,13 @@ Account:
     bool Credit = false;
     decimal savingbalance = 0;
     int balance = 50;
+    decimal creditamount;
 
     Banksystem.Customer customer;
 
     public void CreateCustomer()
     {
-        customer = new Customer(name, Lastname, day, Month, Year, balance, Savingaccount, savingbalance, Credit);
+        customer = new Customer(name, Lastname, day, Month, Year, balance, Savingaccount, savingbalance, Credit, creditamount);
         var account = new CheckingAccount(customer);
         Bank.Accounts.Add(account);
         Bank.SaveAccounts();
