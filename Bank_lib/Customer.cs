@@ -17,12 +17,14 @@ public class Customer : IValidate
     public decimal SavingBalance { get; set; }
     public string log { get; set; }
     public decimal creditamount { get; set; }
+    public static int ID { get; set; }
+    public int tmpID { get; set; }
 
-
-    public Customer(string name, string LastName,
+    public Customer(int ID, string name, string LastName,
     int day, int month, int year, decimal CheckingBalance,
     bool Savingaccount, decimal SavingBalance, bool Credit, decimal creditamount)
     {
+        GetID();
         if (ValidateLastName(LastName) == true)
         {
             Lastname = LastName;
@@ -38,18 +40,21 @@ public class Customer : IValidate
         this.CheckingBalance = CheckingBalance;
         this.SavingBalance = SavingBalance;
         this.Credit = Credit;
+        ID = tmpID;
 
     }
     public Customer() { }
 
 
-    public void MakeAccount(string name, string LastName,
+    public void MakeAccount(int ID, string name, string LastName,
                             int day, int month, int year,
                             decimal Checkingbalance, bool Savingaccount,
                             decimal savingBalance, decimal creditamount)
     {
-        Customer customer = new Customer(name, LastName, day, month, year, Checkingbalance, Savingaccount, savingBalance, Credit, creditamount);
+
+        Customer customer = new Customer(ID, name, LastName, day, month, year, Checkingbalance, Savingaccount, savingBalance, Credit, creditamount);
         var account = new Account(customer);
+        GetID();
         logging.logs.Add($"Added account for {name} on {DateTime.Now}");
         logging.Savelog();
         Bank.Accounts.Add(account);
@@ -198,13 +203,19 @@ public class Customer : IValidate
                 {
                     customer.Owner.CheckingBalance -= money;
                     customer.Owner.creditamount = 0;
-                    logging.logs.Add($"The credit in High of {money} substracted from the Checkingbalance");  
+                    logging.logs.Add($"The credit in High of {money} substracted from the Checkingbalance");
                     logging.Savelog();
                     Credit = false;
                 }
             }
         }
         Bank.SaveAccounts();
+    }
+
+    public void GetID()
+    {
+        tmpID ++;
+        ID= tmpID;
     }
 
 }

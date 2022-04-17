@@ -55,12 +55,20 @@ Account:
     decimal savingbalance = 0;
     int balance = 50;
     decimal creditamount;
+    static int id;
+    int tmp = 0;
 
     Banksystem.Customer customer;
 
     public void CreateCustomer()
     {
-        customer = new Customer(name, Lastname, day, Month, Year, balance, Savingaccount, savingbalance, Credit, creditamount);
+        customer = new Customer(tmp, name, Lastname, 
+                                day, Month, Year, 
+                                balance, Savingaccount, 
+                                savingbalance, Credit,
+                                creditamount);
+        tmp++;
+        id = tmp;
         var account = new CheckingAccount(customer);
         Bank.Accounts.Add(account);
         Bank.SaveAccounts();

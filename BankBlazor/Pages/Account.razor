@@ -14,8 +14,8 @@ else
 {
     <h1>Welcome @name, @SelectedAccount.Owner.Lastname</h1>
 
-        <span> Current Checkingbalance: @SelectedAccount.Owner.CheckingBalance.ToString("c") </span><br />
-    @if (SelectedAccount.Owner.savingaccount == true)
+    <span> Current Checkingbalance: @SelectedAccount.Owner.CheckingBalance.ToString("c") </span><br />
+    @if (SelectedAccount.Owner.savingaccount ==true )
     {
         <br>
         <p>Current Savingbalance: @SelectedAccount.Owner.SavingBalance</p>
@@ -55,12 +55,12 @@ else
 @if (SelectedAccount.Owner.Credit == false)
 {
     <button @onclick="GetCreditMoney">Get Credit</button>
-    <input @bind=Creditamount /> 
+    <input @bind=Creditamount />
 }
-    @if(SelectedAccount.Owner.CheckingBalance >= SelectedAccount.Owner.creditamount && SelectedAccount.Owner.Credit == true)
-    {
-        <button @onclick="PayBackMoney">Pay Credit back</button>
-    }
+@if (SelectedAccount.Owner.CheckingBalance >= SelectedAccount.Owner.creditamount && SelectedAccount.Owner.Credit == true)
+{
+    <button @onclick="PayBackMoney">Pay Credit back</button>
+}
 
 
 
@@ -88,7 +88,7 @@ else
     string log;
     bool Savingaccount = false;
     decimal savingbalance = 0;
-    decimal Creditamount=0;
+    decimal Creditamount = 0;
     IEnumerable<string> customerLogs;
 
     decimal depositAmount;
@@ -145,7 +145,7 @@ else
     {
         SelectedAccount.Owner.TransferMoneyFromCheckingToSaving(TransferMoney);
         Bank.SaveAccounts();
-        logging.Savelog(); 
+        logging.Savelog();
         StateHasChanged();
         OnRefresh();
     }
