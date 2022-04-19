@@ -46,6 +46,7 @@ else
     <p>Year: @SelectedAccount.Owner.Birthdate.Year</p>
     <p>Savingaccount: @SelectedAccount.Owner.savingaccount</p>
     <p>Creditamount: @SelectedAccount.Owner.creditamount</p>
+    <p>Account Number: @SelectedAccount.Owner.AccountNumber</p>
 }
 
 @if (SelectedAccount.Owner.savingaccount == false)
@@ -89,6 +90,7 @@ else
     bool Savingaccount = false;
     decimal savingbalance = 0;
     decimal Creditamount = 0;
+    int Accoutnumber;
     IEnumerable<string> customerLogs;
 
     decimal depositAmount;

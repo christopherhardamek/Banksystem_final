@@ -17,15 +17,17 @@ public class Customer : IValidate
     public decimal SavingBalance { get; set; }
     public string log { get; set; }
     public decimal creditamount { get; set; }
-    public static int ID { get; set; }
-    public int tmpID { get; set; }
+    public int ID { get; set; }
+    static int nextID = 1;
+    public int AccountNumber { get; set; }
 
-    public Customer(int ID, string name, string LastName,
+    public Customer(string name, string LastName,
     int day, int month, int year, decimal CheckingBalance,
-    bool Savingaccount, decimal SavingBalance, bool Credit, decimal creditamount)
+    bool Savingaccount, decimal SavingBalance, bool Credit,
+    decimal creditamount, int Accountnumber)
     {
         GetID();
-        if (ValidateLastName(LastName) == true)
+        if (ValidateLastName(LastName))
         {
             Lastname = LastName;
         }
@@ -40,7 +42,7 @@ public class Customer : IValidate
         this.CheckingBalance = CheckingBalance;
         this.SavingBalance = SavingBalance;
         this.Credit = Credit;
-        ID = tmpID;
+        GetAccountNumber(Accountnumber);
 
     }
     public Customer() { }
@@ -52,7 +54,10 @@ public class Customer : IValidate
                             decimal savingBalance, decimal creditamount)
     {
 
-        Customer customer = new Customer(ID, name, LastName, day, month, year, Checkingbalance, Savingaccount, savingBalance, Credit, creditamount);
+        Customer customer = new Customer(name, LastName,
+                                        day, month, year, Checkingbalance,
+                                        Savingaccount, savingBalance, Credit,
+                                        creditamount, AccountNumber);
         var account = new Account(customer);
         GetID();
         logging.logs.Add($"Added account for {name} on {DateTime.Now}");
@@ -65,28 +70,37 @@ public class Customer : IValidate
 
     public bool ValidateLastName(string LastName)
     {
-        if (LastName.Length == 0)
+        var AccountName = LastName.ToString().Length;
+        if (AccountName > 1)
         {
-            throw new Exception("Name too short");
+            return true;
+        }else if (AccountName == null)
+        {
+            throw new AccountNameInvalid();
         }
         else
         {
-            Lastname = LastName;
-            return true;
+            throw new AccountNameInvalid();
         }
 
     }
 
     public bool ValidateName(string name)
     {
-        if (name.Length == 0)
+        var AccountName = name.ToString().Length;
+        if (AccountName <= 1)
         {
-            throw new Exception("Name too short");
+            throw new AccountNameInvalid();
 
         }
-        else
+        else if (AccountName == null)
         {
-            Name = name;
+            throw new AccountNameInvalid();
+        }else if(AccountName == ' ')
+        {
+            throw new AccountNameInvalid();
+        }else
+        {
             return true;
         }
     }
@@ -214,8 +228,20 @@ public class Customer : IValidate
 
     public void GetID()
     {
-        tmpID ++;
-        ID= tmpID;
+        ID = nextID++;
+    }
+    public void GetAccountNumber(int Accountnumber)
+    {
+        var AccountNumberLength = Accountnumber.ToString().Length;
+        if (AccountNumberLength >= 8 && AccountNumberLength <= 12)
+        {
+            AccountNumber = Accountnumber;
+        }
+        else
+        {
+            throw new AccountNumberMustBeBetweenn8And12Digits();
+        }
+
     }
 
 }

@@ -19,8 +19,12 @@
 <p>birtday year:
     <input type='number' @bind="Year"><br>
 </p>
+<p>Account number:
+    <input type= 'number'@bind= "Accountnumber"><br>
+</p>
 
 <button @onclick="CreateCustomer"> Create Customer</button><br>
+@errorMessage<br>
 
 @if (Bank.Accounts.Count() == 0)
 {
@@ -38,11 +42,6 @@ Account:
 
 
 @code {
-    protected override void OnInitialized()
-    {
-        Bank.LoadAccounts();
-    }
-
 
 
     string name;
@@ -55,27 +54,44 @@ Account:
     decimal savingbalance = 0;
     int balance = 50;
     decimal creditamount;
-    static int id;
-    int tmp = 0;
 
+    int Accountnumber;
+
+    protected override void OnInitialized()
+    {
+        Bank.LoadAccounts();
+    }
     Banksystem.Customer customer;
-
+    string errorMessage;
     public void CreateCustomer()
     {
-        customer = new Customer(tmp, name, Lastname, 
+    
+        try{
+
+        customer = new Customer(name, Lastname, 
                                 day, Month, Year, 
                                 balance, Savingaccount, 
                                 savingbalance, Credit,
-                                creditamount);
-        tmp++;
-        id = tmp;
+                                creditamount,Accountnumber);
         var account = new CheckingAccount(customer);
         Bank.Accounts.Add(account);
         Bank.SaveAccounts();
+        errorMessage = null;
+        } catch(AccountNumberMustBeBetweenn8And12Digits)
+        {
+            errorMessage = "Account Number must be between 8 and 12 digits";
+        }catch (AccountNameInvalid)
+        {
+            errorMessage = "Account Name must be minimum 2 letters";
+        }
     }
     public void LoadedAccount()
     {
         Bank.LoadAccounts();
 
+    }
+    public void GetAccounntNumber()
+    {
+        customer.GetAccountNumber(Accountnumber);
     }
 }
