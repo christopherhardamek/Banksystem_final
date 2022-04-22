@@ -27,14 +27,8 @@ public class Customer : IValidate
     decimal creditamount, int Accountnumber)
     {
         GetID();
-        if (ValidateLastName(LastName))
-        {
-            Lastname = LastName;
-        }
-        if (ValidateName(name))
-        {
-            Name = name;
-        }
+        ValidateLastName(LastName);
+        ValidateName(name);
         savingaccount = Savingaccount;
 
         Birthdate = new DateTime(year, month, day);
@@ -60,7 +54,7 @@ public class Customer : IValidate
                                         creditamount, AccountNumber);
         var account = new Account(customer);
         GetID();
-        logging.logs.Add($"Added account for {name} on {DateTime.Now}");
+        logging.logs.Add($"Added account for  with the ID: {ID} with {name} on {DateTime.Now}");
         logging.Savelog();
         Bank.Accounts.Add(account);
         Bank.SaveAccounts();
@@ -68,50 +62,71 @@ public class Customer : IValidate
 
 
 
-    public bool ValidateLastName(string LastName)
+    public void ValidateLastName(string LastName)
     {
-        var AccountName = LastName.ToString().Length;
-        if (AccountName > 1)
+        try
         {
-            return true;
-        }else if (AccountName == null)
+            int.Parse(LastName);
+            throw new AccountNameInvalid();
+        }
+        catch (AccountNameInvalid)
+        {
+            throw;
+        }
+        catch { }
+        var AccountName = LastName.ToString().Length;
+        if (AccountName <= 1)
+        {
+            throw new AccountNameInvalid();
+
+        }
+        else if (string.IsNullOrWhiteSpace(LastName))
         {
             throw new AccountNameInvalid();
         }
         else
         {
-            throw new AccountNameInvalid();
+            Lastname = LastName;
         }
-
     }
 
-    public bool ValidateName(string name)
+    public void ValidateName(string name)
     {
+        try
+        {
+            int.Parse(name);
+            throw new AccountNameInvalid();
+        }
+        catch (AccountNameInvalid)
+        {
+            throw;
+        }
+        catch { }
         var AccountName = name.ToString().Length;
         if (AccountName <= 1)
         {
             throw new AccountNameInvalid();
 
         }
-        else if (AccountName == null)
+        else if (string.IsNullOrWhiteSpace(name))
         {
             throw new AccountNameInvalid();
-        }else if(AccountName == ' ')
+        }
+        else
         {
-            throw new AccountNameInvalid();
-        }else
-        {
-            return true;
+            Name = name;
         }
     }
+
     public void MakeDeposit(decimal depositAmount)
     {
         foreach (var customer in Bank.Accounts)
         {
             if (customer.Owner.Name == Name)
             {
+
                 customer.Owner.CheckingBalance += depositAmount;
-                log = $"Adding money {depositAmount} to {Name} new Balance: {CheckingBalance} on {DateTime.Now}";
+                log = $"The user with the ID: {ID} adding money {depositAmount} to {Name} new Balance: {CheckingBalance} on {DateTime.Now}";
                 Bank.SaveAccounts();
                 break;
             }
@@ -129,7 +144,7 @@ public class Customer : IValidate
                 if ((customer.Owner.CheckingBalance - depositAmount) >= -500)
                 {
                     customer.Owner.CheckingBalance -= depositAmount;
-                    log = $"Substract money {depositAmount} to {Name} new Balance: {CheckingBalance} on {DateTime.Now}";
+                    log = $"The user with the ID: {ID} substract money {depositAmount} to {Name} new Balance: {CheckingBalance} on {DateTime.Now}";
                     logging.logs.Add(log);
                     logging.Savelog();
                 }
@@ -145,7 +160,7 @@ public class Customer : IValidate
             {
                 customer.Owner.savingaccount = true;
                 Bank.SaveAccounts();
-                logging.logs.Add($"Savingaccount created for {Name} on {DateTime.Now}");
+                logging.logs.Add($"The user with the  ID: {ID} savingaccount created for {Name} on {DateTime.Now}");
                 logging.Savelog();
                 break;
             }
@@ -158,12 +173,11 @@ public class Customer : IValidate
         {
             if (customer.Owner.Name == Name)
             {
-
                 if ((customer.Owner.CheckingBalance - deposit) >= -500)
                 {
                     customer.Owner.CheckingBalance -= deposit;
                     customer.Owner.SavingBalance += deposit;
-                    logging.logs.Add($"Money Transfered from Checking to Saving new Balance {CheckingBalance}");
+                    logging.logs.Add($"The user with the {ID} money transfered from Checking to saving new Balance {CheckingBalance}");
                     break;
                 }
 
@@ -183,9 +197,8 @@ public class Customer : IValidate
                     customer.Owner.CheckingBalance += deposit;
                     customer.Owner.SavingBalance -= deposit;
                     Bank.SaveAccounts();
-                    logging.logs.Add($"Money Transfered from Saving to Checking new Balance {CheckingBalance}");
+                    logging.logs.Add($"The user with the {ID} money Transfered from Saving to Checking new Balance {CheckingBalance}");
                     break;
-
                 }
             }
         }
@@ -200,7 +213,7 @@ public class Customer : IValidate
                 customer.Owner.creditamount = money;
                 Credit = true;
                 customer.Owner.CheckingBalance += money;
-                logging.logs.Add($"The credit in High of {money} added to the Checkingbalance");
+                logging.logs.Add($"The user with the {ID}  get the credit in High of {money} added to the Checkingbalance");
                 logging.Savelog();
             }
         }
@@ -243,6 +256,5 @@ public class Customer : IValidate
         }
 
     }
-
 }
 

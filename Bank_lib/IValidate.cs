@@ -1,5 +1,5 @@
 public interface IValidate
 {
-    bool ValidateName(string name);
-    bool ValidateLastName(string LastName);
+    void ValidateName(string name);
+    void ValidateLastName(string LastName);
 }

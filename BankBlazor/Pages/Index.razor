@@ -83,6 +83,9 @@ Account:
         }catch (AccountNameInvalid)
         {
             errorMessage = "Account Name must be minimum 2 letters";
+        } catch (Exception ex)
+        {
+            errorMessage = ex.Message;
         }
     }
     public void LoadedAccount()
