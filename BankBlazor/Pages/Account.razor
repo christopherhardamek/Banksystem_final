@@ -47,6 +47,7 @@ else
     <p>Savingaccount: @SelectedAccount.Owner.savingaccount</p>
     <p>Creditamount: @SelectedAccount.Owner.creditamount</p>
     <p>Account Number: @SelectedAccount.Owner.AccountNumber</p>
+    <p>ID : @SelectedAccount.Owner.ID</p>
 }
 
 @if (SelectedAccount.Owner.savingaccount == false)
@@ -116,7 +117,7 @@ else
         //Bank.LoadAccounts();
         logging.LoadLog();
         customerLogs = from log in logging.logs
-                       where log.Contains(SelectedAccount.Owner.Name)
+                       where log.Contains($"ID: {SelectedAccount.Owner.ID}")
                        select log;
 
     }
