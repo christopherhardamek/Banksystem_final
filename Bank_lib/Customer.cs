@@ -261,12 +261,10 @@ public class Customer : IValidate
     {
         foreach (var customer in Bank.Accounts)
         {
-            if (customer.Owner.Name == Name)
-            {
-                customer.Owner.Age =  DateTime.Today.Year - Birthdate.Year;
-                
-            }
-            Bank.SaveAccounts();
+            customer.Owner.Age = DateTime.Today.Year - Birthdate.Year;
+            Age = customer.Owner.Age;
+
+            Bank.SaveAccounts();  
         }
     }
 }
