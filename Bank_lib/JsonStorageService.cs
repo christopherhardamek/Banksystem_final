@@ -1,29 +1,22 @@
 using System.Text.Json;
 using Banksystem;
 
-public  class JsonStorageService : IStorageService
+public class JsonStorageService : IStorageService
 {
-    public static List<Account> Accounts { get; set; } = new();
-    IEnumerable<Account> accounts;
-    public void SaveAccounts(List<Account> Accounts)
+   public IEnumerable<Account> LoadAccounts()
     {
-        var json = JsonSerializer.Serialize(Accounts);
-        File.WriteAllText("../accounts.json", json);
-    }
-
-    Account LoadAccounts()
-    {
-        if (File.Exists("../accounts.json"))
+        List<Account> accounts = new();
+        if(File.Exists("accounts.json"))
         {
-            var json = File.ReadAllText("../accounts.json");
-            Accounts = JsonSerializer.Deserialize<List<Account>>(json);
-        }
-        else
-        {
-            Accounts = new List<Account>();
-            var json = JsonSerializer.Serialize(Accounts);
-            File.WriteAllText("../accounts.json", json);
+            var json = File.ReadAllText("accounts.json");
+            accounts = System.Text.Json.JsonSerializer.Deserialize<List<Account>>(json);
         }
         return accounts;
+    }
+
+    public void SaveAccounts(IEnumerable<Account> accounts)
+    {
+        var json = System.Text.Json.JsonSerializer.Serialize(accounts);
+        File.WriteAllText("accounts.json", json);
     }
 }

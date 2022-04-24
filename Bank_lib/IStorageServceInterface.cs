@@ -1,9 +1,8 @@
 namespace Banksystem;
 
-public interface IStorageService 
+public interface IStorageService
 {
-    public static List<Account> Accounts { get; set; } = new();
-    Account LoadAccounts();
-    void SaveAccounts(List<Account> Accounts);
+    public void SaveAccounts(IEnumerable<Account> accounts);
+    public IEnumerable<Account> LoadAccounts();
 }
 
