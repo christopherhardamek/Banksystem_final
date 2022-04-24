@@ -24,9 +24,6 @@ public  class JsonStorageService : IStorageService
             var json = JsonSerializer.Serialize(Accounts);
             File.WriteAllText("../accounts.json", json);
         }
+        return accounts;
     }
 }
-    // public List<Account> LoadAccounts()
-    // {
-
-    // }
