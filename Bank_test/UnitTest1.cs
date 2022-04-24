@@ -54,6 +54,7 @@ public class Tests
         Customer c1 = new Customer("PEter", "Lastname", 12, 12, 2000, 5000, false, 0, false, 0, 12345678);
         Customer c2 = new Customer("Michael", "Sure", 12, 12, 2000, 5000, false, 0, false, 0, 12345678);
         Assert.AreNotEqual(true,c1.ID==c2.ID);
+        
     }
     
     
