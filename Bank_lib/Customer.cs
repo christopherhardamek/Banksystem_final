@@ -60,8 +60,8 @@ public class Customer : IValidate
         Bank.SaveAccounts();
     }
 
-   public bool IsSenior  => Birthdate < DateTime.Today.AddYears(-45);
-   public bool IsYounger => Birthdate <DateTime.Now;
+    public bool IsSenior => Birthdate < DateTime.Today.AddYears(-45);
+    public bool IsYounger => Birthdate < DateTime.Now;
 
 
     public void ValidateLastName(string LastName)
@@ -258,5 +258,6 @@ public class Customer : IValidate
         }
 
     }
+
 }
 
