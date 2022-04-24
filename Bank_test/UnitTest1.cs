@@ -48,4 +48,13 @@ public class Tests
         Customer customer = new Customer("Peter", "Lastname", 12, 12, 2000, 5000, false, 0, false, 0, 12345678);
         Assert.AreEqual(12345678, customer.AccountNumber);
     }
+    [Test]
+    public void getID()
+    {
+        Customer c1 = new Customer("PEter", "Lastname", 12, 12, 2000, 5000, false, 0, false, 0, 12345678);
+        Customer c2 = new Customer("Michael", "Sure", 12, 12, 2000, 5000, false, 0, false, 0, 12345678);
+        Assert.AreNotEqual(true,c1.ID==c2.ID);
+    }
+    
+    
 }
