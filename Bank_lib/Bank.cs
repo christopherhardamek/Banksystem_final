@@ -9,21 +9,21 @@ public static class Bank
     
     public static void LoadAccounts()
     {
-        if (File.Exists("../accounts.json"))
+        if (File.Exists("../files/accounts.json"))
         {
-            var json = File.ReadAllText("../accounts.json");
+            var json = File.ReadAllText("../files/accounts.json");
             Accounts = JsonSerializer.Deserialize<List<Account>>(json);
         }else
         {
             Accounts= new List<Account>();
             var json = JsonSerializer.Serialize(Accounts);
-            File.WriteAllText("../accounts.json", json);
+            File.WriteAllText("../files/accounts.json", json);
         }
     }
     public static void SaveAccounts()
     {
         var json = JsonSerializer.Serialize(Accounts);
-        File.WriteAllText("../accounts.json", json);
+        File.WriteAllText("../files/accounts.json", json);
     }
     
 
