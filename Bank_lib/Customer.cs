@@ -60,7 +60,7 @@ public class Customer : IValidate
         Bank.SaveAccounts();
     }
 
-
+   public bool IsSenior  => Birthdate < DateTime.Today.AddYears(-45)
 
 
     public void ValidateLastName(string LastName)
