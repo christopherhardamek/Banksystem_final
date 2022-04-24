@@ -35,4 +35,11 @@ public class Tests
         var c = new  Customer("Peter","Lastname",12,12,2000,5000,false,0,false,0,12345678);
         Assert.IsFalse(c.IsSenior);
     }
+
+    [Test]
+    public void IsCustomerYoungerTheFuture()
+    {
+        var c = new  Customer("Peter","Lastname",12,12,2000,5000,false,0,false,0,12345678);
+        Assert.IsFalse(c.IsYounger);
+    } 
 }
