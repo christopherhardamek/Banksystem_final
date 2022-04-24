@@ -61,6 +61,7 @@ public class Customer : IValidate
     }
 
    public bool IsSenior  => Birthdate < DateTime.Today.AddYears(-45);
+   public bool IsYounger => Birthdate <DateTime.Now;
 
 
     public void ValidateLastName(string LastName)
