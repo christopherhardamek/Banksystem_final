@@ -2,7 +2,9 @@
 @using Banksystem
 
 @using System.Linq;
-
+<head>
+  <link rel="stylesheet" href="styles.css">
+</head>
 
 
 @if (SelectedAccount == null)
@@ -34,19 +36,20 @@ else
     <button @onclick="Withdraw">withdrawn</button>
 
 
+    <div class= "Accountbalancestyle">
+
+    
     <h2>Account Information</h2>
 
 
     <p>Name: @SelectedAccount.Owner.Name</p>
     <p>Lastname: @SelectedAccount.Owner.Lastname</p>
-    <p>Balance: @SelectedAccount.Owner.CheckingBalance</p>
-    <p>Birhtdate:</p>
-    <p>Day: @SelectedAccount.Owner.Birthdate.Day</p>
-    <p>Month: @SelectedAccount.Owner.Birthdate.Month</p>
-    <p>Year: @SelectedAccount.Owner.Birthdate.Year</p>
+    <p>Balance: @SelectedAccount.Owner.CheckingBalance.ToString("c")</p>
+    <p>Birhtdate: @SelectedAccount.Owner.Birthdate.Month/@SelectedAccount.Owner.Birthdate.Day/@SelectedAccount.Owner.Birthdate.Year</p>
     <p>Savingaccount: @SelectedAccount.Owner.savingaccount</p>
     <p>Creditamount: @SelectedAccount.Owner.creditamount</p>
     <p>Account Number: @SelectedAccount.Owner.AccountNumber</p>
+    </div>
 }
 
 @if (SelectedAccount.Owner.savingaccount == false)
@@ -172,3 +175,4 @@ else
     }
 
 }
+
