@@ -2,30 +2,56 @@
 @using Banksystem
 
 <PageTitle>Index</PageTitle>
-<div id=Accountbalancestyle>
 <h1>Please enter your Information</h1>
 <h2>Create an account</h2>
-<p>Name:
-    <input type='text' @bind="name"><br>
-</p>
-<p>Lastname:
-    <input type='text' @bind="Lastname"><br>
-</p>
-<p>birthday day:
-    <input type='number' @bind="day"><br>
-</p>
-<p>birthday month:
-    <input type='number' @bind="Month"><br>
-</p>
-<p>birtday year:
-    <input type='number' @bind="Year"><br>
-</p>
-<p>Account number:
-    <input type= 'number'@bind= "Accountnumber"><br>
-</p>
-</div>
+<div id="AccountBalanceStyle">
+    <table>
+        <tr>
+            Name:
+        </tr>
+        <td>
+            <input type='text' @bind="name"><br>
+        </td>
+        <tr>
+            Lastname:
+        </tr>
+        <td>
+            <input type='text' @bind="Lastname"><br>
+        </td>
+        <tr>
+            birthday day:
+        </tr>
+        <td>
+            <input type='number' @bind="day"><br>
+        </td>
+        <tr>
+            birthday month:
+        </tr>
+        <td>
+            <input type='number' @bind="Month"><br>
+        </td>
+        <tr>
+            birtday year:
+
+        </tr>
+        <td>
+
+            <input type='number' @bind="Year"><br>
+        </td>
+        <tr>
+            Account number:
+        </tr>
+        <td>
+            <input type='number' @bind="Accountnumber"><br>
+
+        </td>
+
+
+    </table>
+
 <button @onclick="CreateCustomer"> Create Customer</button><br>
-@errorMessage<br>
+<p style="color:red">@errorMessage</p>
+</div>
 
 @if (Bank.Accounts.Count() == 0)
 {
@@ -66,25 +92,29 @@ Account:
     string errorMessage;
     public void CreateCustomer()
     {
-    
-        try{
 
-        customer = new Customer(name, Lastname, 
-                                day, Month, Year, 
-                                balance, Savingaccount, 
-                                savingbalance, Credit,
-                                creditamount,Accountnumber);
-        var account = new CheckingAccount(customer);
-        Bank.Accounts.Add(account);
-        Bank.SaveAccounts();
-        errorMessage = null;
-        } catch(AccountNumberMustBeBetweenn8And12Digits)
+        try
+        {
+
+            customer = new Customer(name, Lastname,
+            day, Month, Year,
+            balance, Savingaccount,
+            savingbalance, Credit,
+            creditamount, Accountnumber);
+            var account = new CheckingAccount(customer);
+            Bank.Accounts.Add(account);
+            Bank.SaveAccounts();
+            errorMessage = null;
+        }
+        catch (AccountNumberMustBeBetweenn8And12Digits)
         {
             errorMessage = "Account Number must be between 8 and 12 digits";
-        }catch (AccountNameInvalid)
+        }
+        catch (AccountNameInvalid)
         {
             errorMessage = "Account Name must be minimum 2 letters";
-        } catch (Exception ex)
+        }
+        catch (Exception ex)
         {
             errorMessage = ex.Message;
         }
