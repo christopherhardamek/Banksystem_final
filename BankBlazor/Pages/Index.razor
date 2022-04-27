@@ -2,6 +2,7 @@
 @using Banksystem
 
 <PageTitle>Index</PageTitle>
+<div id=Accountbalancestyle>
 <h1>Please enter your Information</h1>
 <h2>Create an account</h2>
 <p>Name:
@@ -22,7 +23,7 @@
 <p>Account number:
     <input type= 'number'@bind= "Accountnumber"><br>
 </p>
-
+</div>
 <button @onclick="CreateCustomer"> Create Customer</button><br>
 @errorMessage<br>
 

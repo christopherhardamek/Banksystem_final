@@ -2,9 +2,6 @@
 @using Banksystem
 
 @using System.Linq;
-<head>
-  <link rel="stylesheet" href="styles.css">
-</head>
 
 
 @if (SelectedAccount == null)
@@ -15,66 +12,72 @@
 else
 {
     <h1>Welcome @name, @SelectedAccount.Owner.Lastname</h1>
-
+    <div ID="AccountBalanceStyle">
     <span> Current Checkingbalance: @SelectedAccount.Owner.CheckingBalance.ToString("c") </span><br />
-    @if (SelectedAccount.Owner.savingaccount ==true )
-    {
-        <br>
-        <p>Current Savingbalance: @SelectedAccount.Owner.SavingBalance</p>
-        <label>Deposit Amount
-            <input @bind=TransferMoney />
+    @if (SelectedAccount.Owner.savingaccount == true)
+        {
+            <p>Current Savingbalance: @SelectedAccount.Owner.SavingBalance.ToString("c")</p>
+            <label> Deposit for Saving
+                <input @bind=TransferMoney />
+            </label>
+            <button @onclick="TransferMoneyToSaving">Transfer to Saving</button>
+            <button @onclick="TransfertMoneyToChecking">Transfer to Checking</button><br>
+        }
+
+
+        <label>Deposit for checking
+            <input @bind=depositAmount />
         </label>
-        <button @onclick="TransferMoneyToSaving">Transfer to Saving</button>
-        <button @onclick="TransfertMoneyToChecking">Transfer to Checking</button><br>
-    }
+        <button @onclick="makeDeposit">Make Deposit</button>
+        <button @onclick="Withdraw">withdrawn</button>
+        <br>
 
-
-    <label>Deposit Amount
-        <input @bind=depositAmount />
-    </label>
-    <button @onclick="makeDeposit">Make Deposit</button>
-    <button @onclick="Withdraw">withdrawn</button>
-
-
-    <div class= "Accountbalancestyle">
-
-    
-    <h2>Account Information</h2>
-
-
-    <p>Name: @SelectedAccount.Owner.Name</p>
-    <p>Lastname: @SelectedAccount.Owner.Lastname</p>
-    <p>Balance: @SelectedAccount.Owner.CheckingBalance.ToString("c")</p>
-    <p>Birhtdate: @SelectedAccount.Owner.Birthdate.Month/@SelectedAccount.Owner.Birthdate.Day/@SelectedAccount.Owner.Birthdate.Year</p>
-    <p>Savingaccount: @SelectedAccount.Owner.savingaccount</p>
-    <p>Creditamount: @SelectedAccount.Owner.creditamount</p>
-    <p>Account Number: @SelectedAccount.Owner.AccountNumber</p>
+        @if (SelectedAccount.Owner.Credit == false)
+        {
+             <p>Amount of credit:  
+            <input @bind=Creditamount />
+            <button @onclick="GetCreditMoney">Get Credit</button></p>
+        }
+        @if (SelectedAccount.Owner.savingaccount == false)
+        {
+            <button @onclick="Createsavingaccount">Create Savingaccount</button>
+        }
+        <br>
+        @if (SelectedAccount.Owner.CheckingBalance >= SelectedAccount.Owner.creditamount && SelectedAccount.Owner.Credit ==
+       true)
+        {
+            <button @onclick="PayBackMoney">Pay Credit back</button>
+        }
     </div>
-}
-
-@if (SelectedAccount.Owner.savingaccount == false)
-{
-    <button @onclick="Createsavingaccount">Create Savingaccount</button>
-}
-@if (SelectedAccount.Owner.Credit == false)
-{
-    <button @onclick="GetCreditMoney">Get Credit</button>
-    <input @bind=Creditamount />
-}
-@if (SelectedAccount.Owner.CheckingBalance >= SelectedAccount.Owner.creditamount && SelectedAccount.Owner.Credit == true)
-{
-    <button @onclick="PayBackMoney">Pay Credit back</button>
-}
+    <h2>Account Information</h2>
+    <div id="AccountBalanceStyle">
 
 
 
-@log
 
-<h3>Activities:</h3>
+    <p>Name: @SelectedAccount.Owner.Name<br>
+        Lastname: @SelectedAccount.Owner.Lastname<br>
+        Balance: @SelectedAccount.Owner.CheckingBalance.ToString("c")<br>
+        Birhtdate:
+        @SelectedAccount.Owner.Birthdate.Month/@SelectedAccount.Owner.Birthdate.Day/@SelectedAccount.Owner.Birthdate.Year<br>
+        Savingaccount: @SelectedAccount.Owner.savingaccount<br>
+        Creditamount: @SelectedAccount.Owner.creditamount<br>
+        Account Number: @SelectedAccount.Owner.AccountNumber</p>
+</div>
 
-@foreach (var log in customerLogs)
-{
-    @log <br>
+
+
+
+    @log
+
+    <h3>Activities:</h3>
+    <div id="AccountBalanceStyle">
+
+    @foreach (var log in customerLogs)
+    {
+        @log <br>
+    }
+    </div>
 }
 
 
@@ -175,4 +178,3 @@ else
     }
 
 }
-
