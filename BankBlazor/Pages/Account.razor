@@ -35,9 +35,10 @@ else
 
         @if (SelectedAccount.Owner.Credit == false)
         {
-             <p>Amount of credit:  
-            <input @bind=Creditamount />
-            <button @onclick="GetCreditMoney">Get Credit</button></p>
+            <p>Amount of credit:
+                <input @bind=Creditamount />
+                <button @onclick="GetCreditMoney">Get Credit</button>
+            </p>
         }
         @if (SelectedAccount.Owner.savingaccount == false)
         {
@@ -54,16 +55,51 @@ else
     <div id="AccountBalanceStyle">
 
 
+    <table>
 
-
-    <p>Name: @SelectedAccount.Owner.Name<br>
-        Lastname: @SelectedAccount.Owner.Lastname<br>
-        Balance: @SelectedAccount.Owner.CheckingBalance.ToString("c")<br>
-        Birhtdate:
-        @SelectedAccount.Owner.Birthdate.Month/@SelectedAccount.Owner.Birthdate.Day/@SelectedAccount.Owner.Birthdate.Year<br>
-        Savingaccount: @SelectedAccount.Owner.savingaccount<br>
-        Creditamount: @SelectedAccount.Owner.creditamount<br>
-        Account Number: @SelectedAccount.Owner.AccountNumber</p>
+        <tr>
+            Name:
+        </tr>
+        <td>
+            @SelectedAccount.Owner.Name
+        </td>
+        <tr>
+            Lastname:
+        </tr>
+        <td>
+            @SelectedAccount.Owner.Lastname
+        </td>
+        <tr>
+            Balance:
+        </tr>
+        <td>
+            @SelectedAccount.Owner.CheckingBalance.ToString("c")
+        </td>
+        <tr>
+            Birhtdate:
+        </tr>
+        <td>
+            @SelectedAccount.Owner.Birthdate.Month/@SelectedAccount.Owner.Birthdate.Day/@SelectedAccount.Owner.Birthdate.Year<br>
+        </td>
+        <tr>
+            Savingaccount:
+        </tr>
+        <td>
+            @SelectedAccount.Owner.savingaccount
+        </td>
+        <tr>
+            Creditamount:
+        </tr>
+        <td>
+            @SelectedAccount.Owner.creditamount
+        </td>
+        <tr>
+            Account Number:
+        </tr>
+        <td>
+            @SelectedAccount.Owner.AccountNumber
+        </td>
+    </table>
 </div>
 
 
@@ -75,9 +111,9 @@ else
     <div id="AccountBalanceStyle">
 
     @foreach (var log in customerLogs)
-    {
-        @log <br>
-    }
+        {
+            @log <br>
+        }
     </div>
 }
 
