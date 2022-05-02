@@ -8,21 +8,21 @@ public class logging
 
     public static void LoadLog()
     {
-        if (File.Exists("../logs.json"))
+        if (File.Exists("../files/logs.json"))
         {
-            var json = File.ReadAllText("../logs.json");
+            var json = File.ReadAllText("../files/logs.json");
             logs = JsonSerializer.Deserialize<List<string>>(json);
         }
         else
         {
             logs = new List<string>();
             var json = JsonSerializer.Serialize(logs);
-            File.WriteAllText("../logs.json", json);
+            File.WriteAllText("../files/logs.json", json);
         }
     }
     public static void Savelog()
     {
         var json = JsonSerializer.Serialize(logs);
-        File.WriteAllText("../logs.json", json);
+        File.WriteAllText("../files/logs.json", json);
     }
 }

@@ -178,7 +178,7 @@ public class Customer : IValidate
                 {
                     customer.Owner.CheckingBalance -= deposit;
                     customer.Owner.SavingBalance += deposit;
-                    logging.logs.Add($"The user with the {ID} money transfered from Checking to saving new Balance {CheckingBalance}");
+                    logging.logs.Add($"The user with the ID: {ID} money transfered from Checking to saving new Balance {CheckingBalance}");
                     break;
                 }
 
@@ -198,7 +198,7 @@ public class Customer : IValidate
                     customer.Owner.CheckingBalance += deposit;
                     customer.Owner.SavingBalance -= deposit;
                     Bank.SaveAccounts();
-                    logging.logs.Add($"The user with the {ID} money Transfered from Saving to Checking new Balance {CheckingBalance}");
+                    logging.logs.Add($"The user with the ID: {ID} money Transfered from Saving to Checking new Balance {CheckingBalance}");
                     break;
                 }
             }
@@ -231,7 +231,7 @@ public class Customer : IValidate
                 {
                     customer.Owner.CheckingBalance -= money;
                     customer.Owner.creditamount = 0;
-                    logging.logs.Add($"The credit in High of {money} substracted from the Checkingbalance");
+                    logging.logs.Add($"The credit in High of {money} for the ID: {ID} substracted from the Checkingbalance");
                     logging.Savelog();
                     Credit = false;
                 }

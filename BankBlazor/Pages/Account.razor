@@ -14,6 +14,8 @@ else
 {
     <h1>Welcome @name, @SelectedAccount.Owner.Lastname</h1>
     <div ID="AccountBalanceStyle">
+
+
     <span> Current Checkingbalance: @SelectedAccount.Owner.CheckingBalance.ToString("c") </span><br />
     @if (SelectedAccount.Owner.savingaccount == true)
         {
@@ -50,6 +52,7 @@ else
         {
             <button @onclick="PayBackMoney">Pay Credit back</button>
         }
+        
     </div>
     <h2>Account Information</h2>
     <div id="AccountBalanceStyle">
@@ -159,7 +162,7 @@ else
         //Bank.LoadAccounts();
         logging.LoadLog();
         customerLogs = from log in logging.logs
-                       where log.Contains(SelectedAccount.Owner.Name)
+                       where log.Contains($"ID: {SelectedAccount.Owner.ID}")
                        select log;
 
     }
